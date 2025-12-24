@@ -137,7 +137,7 @@ scene.add(tree);
 // Using angles to position them around the tree circumference, slightly outside the layer radius
 const candles = [];
 const candleAngles = [0, Math.PI / 2, Math.PI, 3 * Math.PI / 2]; // 4 angles around the tree
-const candleOffset = 0.3; // Push candles slightly outside the tree
+const candleOffset = 0.2; // Push candles slightly outside the tree
 const candlePositions = [
     { x: (3.0 + candleOffset) * Math.cos(candleAngles[0]), y: 3.2, z: (3.0 + candleOffset) * Math.sin(candleAngles[0]) },      // On first layer (radius 3)
     { x: (2.5 + candleOffset) * Math.cos(candleAngles[1]), y: 4.7, z: (2.5 + candleOffset) * Math.sin(candleAngles[1]) },     // On second layer (radius 2.5)
@@ -255,14 +255,8 @@ function handleInteraction(event) {
             
             updateCandleCount();
             
-            // Show question mark when 4th candle is lit
+            // Show celebration when 4th candle is lit
             if (litCandles === 4) {
-                const questionMark = document.getElementById('question-mark');
-                questionMark.style.display = 'block';
-                setTimeout(() => {
-                    questionMark.style.display = 'none';
-                }, 2000);
-                
                 setTimeout(() => {
                     celebrate();
                 }, 500);
