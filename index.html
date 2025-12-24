@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Merry Christmas & Happy New Year!</title>
     <style>
         * {
@@ -24,15 +24,18 @@
 
         #message {
             position: absolute;
-            top: 20px;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             text-align: center;
             z-index: 100;
             color: #fff;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
             pointer-events: none;
             display: none;
+            width: 90%;
+            max-width: 800px;
+            padding: 20px;
         }
 
         #message h1 {
@@ -41,6 +44,18 @@
             color: #ffd700;
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.8);
             animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @media (max-width: 768px) {
+            #message h1 {
+                font-size: 1.8em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #message h1 {
+                font-size: 1.4em;
+            }
         }
 
         #message p {
@@ -85,6 +100,8 @@
             border-radius: 10px;
             font-size: 1.2em;
             pointer-events: none;
+            width: 90%;
+            max-width: 400px;
         }
 
         #candles-lit {
@@ -99,6 +116,31 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
             pointer-events: none;
         }
+
+        @media (max-width: 768px) {
+            #instructions {
+                font-size: 1em;
+                padding: 12px 20px;
+                bottom: 20px;
+            }
+
+            #candles-lit {
+                font-size: 1.1em;
+                top: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #instructions {
+                font-size: 0.9em;
+                padding: 10px 15px;
+            }
+
+            #candles-lit {
+                font-size: 1em;
+                top: 100px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -109,6 +151,18 @@
     <div id="question-mark" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 15em; color: #ffd700; text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.8); z-index: 100; pointer-events: none; animation: fadeInOut 2s ease-in-out;">
         ?
     </div>
+    <style>
+        @media (max-width: 768px) {
+            #question-mark {
+                font-size: 10em !important;
+            }
+        }
+        @media (max-width: 480px) {
+            #question-mark {
+                font-size: 8em !important;
+            }
+        }
+    </style>
     <div id="candles-lit">
         <span id="candle-count">0</span> / <span id="total-candles">0</span> Candles Lit
     </div>

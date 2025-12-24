@@ -16,6 +16,7 @@ camera.position.set(0, 5, 15);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limit pixel ratio for better performance on mobile
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.getElementById('canvas-container').appendChild(renderer.domElement);
@@ -27,6 +28,11 @@ controls.dampingFactor = 0.05;
 controls.minDistance = 8;
 controls.maxDistance = 30;
 controls.maxPolarAngle = Math.PI / 2.2;
+// Enable touch controls for mobile
+controls.touches = {
+    ONE: THREE.TOUCH.ROTATE,
+    TWO: THREE.TOUCH.DOLLY_PAN
+};
 
 // Lighting
 const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
@@ -204,9 +210,19 @@ updateCandleCount();
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-function onMouseClick(event) {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+function handleInteraction(event) {
+    // Get coordinates from either mouse or touch event
+    let clientX, clientY;
+    if (event.touches && event.touches.length > 0) {
+        clientX = event.touches[0].clientX;
+        clientY = event.touches[0].clientY;
+    } else {
+        clientX = event.clientX;
+        clientY = event.clientY;
+    }
+    
+    mouse.x = (clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(clientY / window.innerHeight) * 2 + 1;
     
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObjects(candles, true);
@@ -253,6 +269,16 @@ function onMouseClick(event) {
             }
         }
     }
+}
+
+function onMouseClick(event) {
+    handleInteraction(event);
+}
+
+function onTouchStart(event) {
+    // Prevent default to avoid scrolling/zooming
+    event.preventDefault();
+    handleInteraction(event);
 }
 
 // Sparkle effect
@@ -312,7 +338,9 @@ function celebrate() {
     }
 }
 
+// Add event listeners for both mouse and touch
 renderer.domElement.addEventListener('click', onMouseClick);
+renderer.domElement.addEventListener('touchstart', onTouchStart, { passive: false });
 
 // Animate flame flickering
 function animateFlames() {
@@ -350,6 +378,7 @@ window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
 animate();
