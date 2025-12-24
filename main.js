@@ -370,6 +370,34 @@ function animate() {
     renderer.render(scene, camera);
 }
 
+// Background music
+const backgroundMusic = document.getElementById('background-music');
+if (backgroundMusic) {
+    backgroundMusic.volume = 0.3; // Set volume to 30%
+    
+    // Try to play music on first user interaction (browsers block autoplay)
+    const startMusic = () => {
+        backgroundMusic.play().catch(err => {
+            console.log('Music autoplay blocked:', err);
+        });
+    };
+    
+    // Start music on first click/touch
+    let musicStarted = false;
+    const startMusicOnInteraction = () => {
+        if (!musicStarted) {
+            startMusic();
+            musicStarted = true;
+            // Remove listeners after first interaction
+            renderer.domElement.removeEventListener('click', startMusicOnInteraction);
+            renderer.domElement.removeEventListener('touchstart', startMusicOnInteraction);
+        }
+    };
+    
+    renderer.domElement.addEventListener('click', startMusicOnInteraction);
+    renderer.domElement.addEventListener('touchstart', startMusicOnInteraction);
+}
+
 // Handle window resize
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
