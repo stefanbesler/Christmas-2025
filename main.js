@@ -12,7 +12,8 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     1000
 );
-camera.position.set(0, 5, 15);
+// Position camera at a nice angle to view the tree
+camera.position.set(8, 6, 12);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -21,13 +22,15 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-// Controls
+// Controls - set target to center of tree (middle height where candles are)
 const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 5, 0); // Look at the middle of the tree
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 controls.minDistance = 8;
 controls.maxDistance = 30;
 controls.maxPolarAngle = Math.PI / 2.2;
+controls.update(); // Update controls to apply target
 // Enable touch controls for mobile
 controls.touches = {
     ONE: THREE.TOUCH.ROTATE,
@@ -137,7 +140,7 @@ scene.add(tree);
 // Using angles to position them around the tree circumference, slightly outside the layer radius
 const candles = [];
 const candleAngles = [0, Math.PI / 2, Math.PI, 3 * Math.PI / 2]; // 4 angles around the tree
-const candleOffset = 0.2; // Push candles slightly outside the tree
+const candleOffset = -0.5; // Push candles slightly outside the tree
 const candlePositions = [
     { x: (3.0 + candleOffset) * Math.cos(candleAngles[0]), y: 3.2, z: (3.0 + candleOffset) * Math.sin(candleAngles[0]) },      // On first layer (radius 3)
     { x: (2.5 + candleOffset) * Math.cos(candleAngles[1]), y: 4.7, z: (2.5 + candleOffset) * Math.sin(candleAngles[1]) },     // On second layer (radius 2.5)
